@@ -13,7 +13,7 @@ services:
 #      - server
 
   frontend:
-    image: tickertape/homelab:latest
+    image: tickertape/homelab:frontend
     platform: linux/amd64
     build: ./frontend
     container_name: vue_frontend
@@ -22,7 +22,7 @@ services:
 
 
   server:
-    image: tickertape/homelab:latest2
+    image: tickertape/homelab:server
     platform: linux/amd64
     build: ./server
     container_name: node_server
