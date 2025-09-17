@@ -16,13 +16,6 @@ RUN pnpm install
 # Копируем весь проект
 COPY . .
 
-# Собираем Vue фронтенд
-WORKDIR /app/frontend
-ENV CI=true
-RUN pnpm install
-RUN pnpm run build
-
 # Команда запуска сервера
-WORKDIR /app
 EXPOSE 3000
 CMD ["node", "server.js"]
