@@ -11,6 +11,7 @@ COPY package*.json ./
 ENV CI=true
 RUN pnpm install
 COPY . .
+RUN ls -R /app
 RUN pnpm run build
 
 # 2. Берём чистый Nginx для отдачи статики

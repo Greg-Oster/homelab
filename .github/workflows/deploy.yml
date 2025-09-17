@@ -22,9 +22,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile
+          file: ./frontend/dockerfile
           push: true
-          tags: tickertape/homelab-frontend:latest
+          tags: tickertape/homelab:latest
 
       # Build server
       - name: Build and push server
