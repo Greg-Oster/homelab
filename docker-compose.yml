@@ -13,6 +13,8 @@ services:
 #      - server
 
   frontend:
+    image: tickertape/homelab:latest
+    platform: linux/amd64
     build: ./frontend
     container_name: vue_frontend
     ports:
@@ -20,6 +22,8 @@ services:
 
 
   server:
+    image: tickertape/homelab:latest2
+    platform: linux/amd64
     build: ./server
     container_name: node_server
     ports:
