@@ -9,7 +9,6 @@ on:
 
 jobs:
   build-frontend:
-    if: github.event.head_commit.message != '' && contains(github.event.head_commit.message, 'frontend')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +20,6 @@ jobs:
           tags: tickertape/homelab:frontend
 
   build-server:
-    if: github.event.head_commit.message != '' && contains(github.event.head_commit.message, 'server')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
