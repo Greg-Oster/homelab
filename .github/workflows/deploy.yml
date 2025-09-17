@@ -31,9 +31,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./server
-          file: ./server/Dockerfile
+          file: ./server/dockerfile
           push: true
-          tags: tickertape/homelab-server:latest
+          tags: tickertape/homelab:latest2
 
       # Build nginx (если нужен кастомный образ — добавь Dockerfile)
       # Если нет, этот шаг можно убрать и использовать просто nginx:alpine
