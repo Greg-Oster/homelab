@@ -1,0 +1,31 @@
+# 1. Используем Node.js для сборки
+FROM node:20-alpine AS BUILD
+
+# Устанавливаем pnpm глобально
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Копируем файлы с зависимостями
+COPY package*.json ./
+ENV CI=true
+RUN pnpm install
+COPY . .
+RUN pnpm run build
+
+# 2. Берём чистый Nginx для отдачи статики
+FROM nginx:alpine
+
+# Копируем билд Vue в папку Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Копируем свой конфиг nginx, если нужен
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Контейнер слушает 80 порт
+EXPOSE 80
+
+# Старт Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+

@@ -1,0 +1,34 @@
+
+services:
+#  nginx:
+#    image: nginx:alpine
+#    container_name: nginx_server
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ./nginx/conf.d:/etc/nginx/conf.d
+#      - ./nginx/html:/usr/share/nginx/html
+#    depends_on:
+#      - frontend
+#      - server
+
+  frontend:
+    build: ./frontend
+    container_name: vue_frontend
+    ports:
+      - "8080:80"
+
+
+  server:
+    build: ./server
+    container_name: node_server
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "npm", "run", "healthcheck"]
+      interval: 5s
+      timeout: 2s
+      retries: 2
+
