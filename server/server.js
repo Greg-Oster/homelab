@@ -22,26 +22,4 @@ app.get('/status', async (req, res) => {
     }
 });
 
-// Перезапуск Nginx
-app.post('/restart', async (req, res) => {
-    try {
-        const container = docker.getContainer('nginx');
-        await container.restart();
-        res.json({ message: 'Nginx перезапущен' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Получение логов Nginx
-app.get('/logs', async (req, res) => {
-    try {
-        const container = docker.getContainer('nginx');
-        const logs = await container.logs({ stdout: true, stderr: true, tail: 100 });
-        res.send(logs.toString());
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
