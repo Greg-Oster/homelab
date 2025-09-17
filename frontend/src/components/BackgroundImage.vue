@@ -12,7 +12,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    // background: url("../assets/img/girl_with_cats.jpeg") center;
+    background: url("../assets/img/girl_with_cats.jpeg") center;
     background-size: cover;
     z-index: -1;
   }
