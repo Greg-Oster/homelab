@@ -7,10 +7,30 @@ on:
       - 'frontend/**'   # workflow запускается, если изменились файлы фронтенда
       - 'server/**'     # workflow запускается, если изменились файлы сервера
 
+
 jobs:
-  build-frontend:
+  filter:
     runs-on: ubuntu-latest
-    if: contains(join(github.event.commits.*.modified, ' '), 'frontend/')
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      server: ${{ steps.filter.outputs.server }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Filter changes
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            server:
+              - 'server/**'
+
+  build-frontend:
+    needs: filter
+    runs-on: ubuntu-latest
+    if: needs.filter.outputs.frontend == 'true'
     steps:
       - uses: actions/checkout@v3
 
@@ -28,8 +48,9 @@ jobs:
           tags: tickertape/homelab:frontend
 
   build-server:
+    needs: filter
     runs-on: ubuntu-latest
-    if: contains(join(github.event.commits.*.modified, ' '), 'server/')
+    if: needs.filter.outputs.server == 'true'
     steps:
       - uses: actions/checkout@v3
 
