@@ -1,11 +1,12 @@
 <script setup lang="ts">
-  const handleClick = () => {
-    console.log('click');
-  }
+// defineEmits(['click']);
+// const handleClick = () => {
+//
+// }
 </script>
 
 <template>
-  <button class="glass-btn" type="button" @click="handleClick">Magic Button</button>
+  <button class="glass-btn" type="button">Magic Button</button>
 </template>
 
 <style>
@@ -50,7 +51,6 @@
   /* тонкая "подсветка" обводки сверху — создаёт эффект стекла */
   outline: none;
   position: relative;
-  overflow: hidden;
 }
 
 /* внутренний отблеск (псевдоэлемент) */

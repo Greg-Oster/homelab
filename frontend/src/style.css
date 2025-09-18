@@ -5,12 +5,16 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #414141;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html * {
+  box-sizing: border-box;
 }
 
 a {
@@ -25,10 +29,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
-  align-items: flex-start;
 }
 
 h1 {
@@ -64,7 +67,7 @@ button:focus-visible {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
