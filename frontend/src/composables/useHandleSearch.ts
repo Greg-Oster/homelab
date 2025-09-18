@@ -8,8 +8,9 @@ export function useHandleSearch(rSearchText: Ref<string>) {
     const params = computed(() => {
         return {
             text: rSearchText.value,
-            area: 1,
+            area: 2,
             per_page: perPage,
+            schedule: 'remote'
         }
     })
     const getSearchParamsString = computed(() => {

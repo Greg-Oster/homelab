@@ -6,8 +6,9 @@ import TagList from "../components/data-display/TagList.vue";
 
 import { ref, computed, watch } from 'vue';
 import { useHandleSearch } from "../composables/useHandleSearch.ts";
+import {formatDateTime} from "../utils/formatDate.ts";
 
-const rSearchText = ref('Фронтенд разработчик vue')
+const rSearchText = ref('Фронтенд разработчик')
 const { handleSearch, allData } = useHandleSearch(rSearchText)
 
 const cTableAllData = computed(() => {
@@ -16,9 +17,11 @@ const cTableAllData = computed(() => {
 const cIsShowTable = computed(() => cTableAllData.value.length)
 
 const userColumns = [
-  { key: 'id', label: 'ID' },
+  // { key: 'id', label: 'ID' },
+  { key: 'published_at', label: 'Дата', render: (val: string) => {return formatDateTime(val)} },
   { key: 'name', label: 'Name' },
-  { key: 'url', label: 'Url' },
+  { key: 'has_test', label: 'has_test' },
+  // { key: 'url', label: 'Url' },
   { key: 'id', label: 'Link to HH', render: (value: string) => { return `https://hh.ru/vacancy/${value}` } },
 ]
 
