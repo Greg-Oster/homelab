@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import MagicButton from "./components/MagicButton.vue";
-import VForm from "./components/VForm.vue";
-import BackgroundImage from "./components/BackgroundImage.vue";
+import BackgroundImage from "./components/ui/BackgroundImage.vue";
+import HomeView from "./views/HomeView.vue";
 </script>
 
 <template>
   <BackgroundImage />
-  <VForm/>
+  <HomeView/>
 </template>
 
 <style scoped>

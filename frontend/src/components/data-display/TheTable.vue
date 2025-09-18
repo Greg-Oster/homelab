@@ -37,6 +37,7 @@ const props = defineProps({
 
 <style scoped>
 .table-wrapper {
+  width: 100%;
   overflow-x: auto;
   padding: 1rem;
 }

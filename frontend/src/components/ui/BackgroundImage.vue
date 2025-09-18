@@ -12,8 +12,9 @@
     position: absolute;
     left: 0;
     top: 0;
-    // background: url("../assets/img/girl_with_cats.jpeg") center;
-    background-size: cover;
+    filter: contrast(160%) brightness(80%);
+    background: linear-gradient(37deg, rgb(55, 71, 76), rgba(74, 63, 122, 0.45)), url("../../assets/svg/gradient.svg") center;
+    //background-size: cover;
     z-index: -1;
   }
 </style>

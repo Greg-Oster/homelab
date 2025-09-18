@@ -1,8 +1,4 @@
 <script setup lang="ts">
-// defineEmits(['click']);
-// const handleClick = () => {
-//
-// }
 </script>
 
 <template>
