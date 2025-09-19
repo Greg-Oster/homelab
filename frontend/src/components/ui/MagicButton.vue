@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <button class="glass-btn" type="button">Magic Button</button>
+  <button class="glass-btn" type="button">Magic Button!</button>
 </template>
 
 <style>
