@@ -1,25 +1,31 @@
-const express = require('express');
-const Docker = require('dockerode');
-const docker = new Docker({ socketPath: '/var/run/docker.sock' });
-const path = require('path');
+import express from "express";
+import fetch from "node-fetch"; // или встроенный fetch в Node 20+
+import NodeCache from "node-cache";
 
 const app = express();
-const PORT = 3000;
+const cache = new NodeCache({ stdTTL: 60 * 5 }); // кэш на 5 минут
 
+app.get("/api/vacancies", async (req, res) => {
+    const { query, page = 0 } = req.query;
 
-// Раздаём фронтенд
-app.use(express.static(path.join(__dirname, 'public')));
+    const cacheKey = `${query}_${page}`;
+    const cached = cache.get(cacheKey);
 
+    if (cached) {
+        return res.json(cached); // возвращаем из кэша
+    }
 
-// Проверка статуса Nginx
-app.get('/status', async (req, res) => {
     try {
-        const container = docker.getContainer('nginx');
-        const data = await container.inspect();
-        res.json({ status: data.State.Status });
+        const response = await fetch(`https://api.hh.ru/vacancies?text=${query}&page=${page}`);
+        if (!response.ok) throw new Error(`HH API error: ${response.status}`);
+
+        const data = await response.json();
+
+        cache.set(cacheKey, data); // сохраняем в кэш
+        res.json(data);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-app.listen(PORT, () => console.log(`Edited: Server running on port ${PORT}`));
+app.listen(3000, () => console.log("Server running on port 3000"));

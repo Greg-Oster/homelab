@@ -160,6 +160,11 @@ const cTagListBtnText = computed(() => {
     return 'Отфильтровать'
   }
 })
+
+const handleApiTest = () => {
+  const test = fetch('https://api.grishaostrouhov.online/api/vacancies').then(res => res.json())
+  console.log(test)
+}
 </script>
 
 <template>
@@ -175,6 +180,7 @@ const cTagListBtnText = computed(() => {
         <h4>Count: {{ cCount }}</h4>
         <input v-model="rSearchText"/>
         <MagicButton @click="handleSearch" class="btn"/>
+        <MagicButton @click="handleApiTest" class="btn"/>
       </template>
     </TheSidebar>
     <div class="main-content">
