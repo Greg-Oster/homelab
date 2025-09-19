@@ -7,20 +7,22 @@ import TagList from "../components/data-display/TagList.vue";
 import { ref, computed, watch } from 'vue';
 import { useHandleSearch } from "../composables/useHandleSearch.ts";
 import {formatDateTime} from "../utils/formatDate.ts";
+import TheLoader from "../components/ui/TheLoader.vue";
 
 const rSearchText = ref('Фронтенд разработчик')
-const { handleSearch, allData } = useHandleSearch(rSearchText)
+const { handleSearch, allData, isLoadingData } = useHandleSearch(rSearchText)
 
 const cTableAllData = computed(() => {
   return allData.value.flatMap((requestData) => requestData.items )
 })
 const cIsShowTable = computed(() => cTableAllData.value.length)
 
+// Константное значение столбцов таблицы
 const userColumns = [
   // { key: 'id', label: 'ID' },
   { key: 'published_at', label: 'Дата', render: (val: string) => {return formatDateTime(val)} },
   { key: 'name', label: 'Name' },
-  { key: 'has_test', label: 'has_test' },
+  { key: 'work_format', label: 'work_format', render: (val: any) => {return val} },
   // { key: 'url', label: 'Url' },
   { key: 'id', label: 'Link to HH', render: (value: string) => { return `https://hh.ru/vacancy/${value}` } },
 ]
@@ -63,7 +65,10 @@ const filterStats = computed(() => {
     return !excludeThisRow
   })
 
-  return { filtered, counts } // counts: { word1: 3, word2: 0, ... }
+  const stopList = Object.entries(counts).map(([name, count]) => ({ name, count }))
+
+
+  return { filtered, stopList } // counts: { word1: 3, word2: 0, ... }
 })
 
 
@@ -82,58 +87,62 @@ const handleInputSubmit = (key: KeyboardEvent) => {
   }
 }
 const handleDefaultExclude = () => {
-  rExcluded.value =
-      [
-        "php",
-        "java",
-        "python",
-        "backend",
-        "fullstack",
-        "devops",
-        "qa",
-        "ux/ui",
-        "designer",
-        "manager",
-        "recruiter",
-        "analyst",
-        "seo",
-        "flutter",
-        "golang",
-        "blockchain",
-        "c#",
-        "c++",
-        "ruby",
-        ".net",
-        "odoo",
-        "delphi",
-        "ml",
-        "ai",
-        "testing",
-        "security",
-        "bi",
-        "project",
-        "mobile",
-        "ios",
-        "android",
-        "database",
-        "teamlead",
-        "lead",
-        "product",
-        "creative",
-        "application",
-        "wordpress",
-        "manual",
-        "etl",
-        "system",
-        "architect",
-        "qa-fullstack",
-        "pre-sale",
-        "cloud",
-        "sales",
-        "devops-инженер",
-        "fpga",
-        "analytics"
-      ]
+  if (rExcluded.value.length) {
+    rExcluded.value = []
+  } else {
+    rExcluded.value =
+        [
+          "php",
+          "java",
+          "python",
+          "backend",
+          "fullstack",
+          "devops",
+          "qa",
+          "ux/ui",
+          "designer",
+          "manager",
+          "recruiter",
+          "analyst",
+          "seo",
+          "flutter",
+          "golang",
+          "blockchain",
+          "c#",
+          "c++",
+          "ruby",
+          ".net",
+          "odoo",
+          "delphi",
+          "ml",
+          "ai",
+          "testing",
+          "security",
+          "bi",
+          "project",
+          "mobile",
+          "ios",
+          "android",
+          "database",
+          "teamlead",
+          "lead",
+          "product",
+          "creative",
+          "application",
+          "wordpress",
+          "manual",
+          "etl",
+          "system",
+          "architect",
+          "qa-fullstack",
+          "pre-sale",
+          "cloud",
+          "sales",
+          "devops-инженер",
+          "fpga",
+          "analytics"
+        ]
+  }
 }
 
 const handleDeleteItem = (name: string) => {
@@ -143,6 +152,14 @@ const handleDeleteItem = (name: string) => {
 watch(rExcluded, (newValue) => {
   handleFilter(newValue)
 })
+
+const cTagListBtnText = computed(() => {
+  if (rExcluded.value.length) {
+    return 'Очистить все'
+  } else {
+    return 'Отфильтровать'
+  }
+})
 </script>
 
 <template>
@@ -150,8 +167,9 @@ watch(rExcluded, (newValue) => {
     <TheSidebar @filter="handleFilter">
       <template #body>
         <input type="text" @keydown="handleInputSubmit" v-model="rInput">
-        <button @click="handleDefaultExclude">Исп. исключения</button>
-        <TagList :list="rExcluded" @delete="handleDeleteItem"/>
+        <TagList :list="filterStats.stopList" @delete="handleDeleteItem">
+          <span @click="handleDefaultExclude" class="taglist-btn">{{ cTagListBtnText }}</span>
+        </TagList>
       </template>
       <template #footer>
         <h4>Count: {{ cCount }}</h4>
@@ -160,6 +178,7 @@ watch(rExcluded, (newValue) => {
       </template>
     </TheSidebar>
     <div class="main-content">
+      <TheLoader :is-loading="isLoadingData"/>
       <TheTable v-if="cIsShowTable" :rows="filteredData.length > 0 ? filteredData : cTableAllData" :columns="userColumns"/>
     </div>
   </div>
@@ -185,6 +204,9 @@ watch(rExcluded, (newValue) => {
   max-height: 100%;
   flex:1;
   min-width: 0;
+  padding-top: 15px;
+  padding-left: 15px;
+  gap: 10px;
 }
 
 </style>

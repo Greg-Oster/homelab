@@ -39,7 +39,6 @@ const props = defineProps({
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
-  padding: 1rem;
 }
 
 .glass-table {

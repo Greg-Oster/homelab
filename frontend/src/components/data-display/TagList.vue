@@ -3,7 +3,7 @@ import TagListItem from "./TagListItem.vue";
 
 defineProps({
   list: {
-    type: Array<string>,
+    type: Array<any>,
     required: true,
   },
 })
@@ -11,6 +11,7 @@ defineProps({
 const emit = defineEmits<{
   delete: [name: string]
 }>()
+
 
 const handleDelete = (name: string) => {
   emit('delete', name)
@@ -20,7 +21,8 @@ const handleDelete = (name: string) => {
 <template>
   <div class="tag-list">
     <div class="tag-list__list glass-container">
-      <TagListItem v-for="item in list.slice().reverse()" :name="item" :key="item" @delete="handleDelete"/>
+      <slot></slot>
+      <TagListItem v-for="item in list.reverse()" :name="item.name" :count="item.count" :key="item" @delete="handleDelete"/>
     </div>
   </div>
 
@@ -36,9 +38,9 @@ const handleDelete = (name: string) => {
     &__list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       overflow-y: scroll;
-      padding: 15px;
+      padding: 5px;
     }
   }
 </style>

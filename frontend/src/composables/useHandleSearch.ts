@@ -4,21 +4,22 @@ import type { Ref } from 'vue'
 export function useHandleSearch(rSearchText: Ref<string>) {
     const url = 'https://api.hh.ru/vacancies'
     const perPage = 100
+    const isLoadingData = ref(false);
 
     const params = computed(() => {
         return {
             text: rSearchText.value,
-            area: 2,
+            area: 1,
             per_page: perPage,
-            schedule: 'remote'
+            work_format: "REMOTE"
         }
     })
+
     const getSearchParamsString = computed(() => {
         const searchParams = new URLSearchParams();
 
-        Object.keys(params.value).forEach(key => {
-            const value = params.value[key];
-            searchParams.append(key, value);
+        Object.entries(params.value).forEach(([key, value]) => {
+            searchParams.append(key, String(value));
         })
 
         return searchParams
@@ -38,6 +39,7 @@ export function useHandleSearch(rSearchText: Ref<string>) {
         }
 
         // Идём по батчам
+        isLoadingData.value = true;
         for (let i = 0; i < pages.length; i += batchSize) {
             const batch = pages.slice(i, i + batchSize);
 
@@ -60,6 +62,7 @@ export function useHandleSearch(rSearchText: Ref<string>) {
         }
 
         console.log('Все ответы получены:', results);
+        isLoadingData.value = false;
         return results;
     }
 
@@ -71,5 +74,5 @@ export function useHandleSearch(rSearchText: Ref<string>) {
         allData.value = await fetchPages(`${url}?${getSearchParamsString.value}`, 0, totalRequestsNeeded);
     }
 
-    return { handleSearch, allData };
+    return { handleSearch, allData, isLoadingData };
 }
