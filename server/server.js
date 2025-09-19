@@ -1,9 +1,20 @@
 import express from "express";
 import fetch from "node-fetch"; // или встроенный fetch в Node 20+
 import NodeCache from "node-cache";
+import cors from "cors";
+
 
 const app = express();
 const cache = new NodeCache({ stdTTL: 60 * 5 }); // кэш на 5 минут
+
+app.use(cors({
+    origin: "*", // или "*"
+    credentials: true,
+}));
+
+app.get("/api/test", (req, res) => {
+    res.json({ message: "OK" });
+});
 
 app.get("/api/vacancies", async (req, res) => {
     const { query, page = 0 } = req.query;
