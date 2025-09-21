@@ -17,6 +17,8 @@ services:
     platform: linux/amd64
     build: ./frontend
     container_name: vue_frontend
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "8080:80"
 

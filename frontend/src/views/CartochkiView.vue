@@ -25,7 +25,7 @@ const cSwipeProgress = computed(() => {
   }
 })
 const cIsSwipedOff = computed(() => {
-  return cSwipeProgress.value > 0.5;
+  return cSwipeProgress.value > 0.6;
 })
 const cTranslateX = computed(() => {
   if (rIsDragging.value) {
@@ -153,7 +153,7 @@ const cartochkiData = ref([
               {'next-cartochka': !cart.isTop && cart.isNext},
               {'bottom-cartochka': !cart.isTop && !cart.isNext},
           ]"
-          :style="cart.isTop ? cDynamicStyle : cDynamicStyleNext"
+          :style="cart.isTop ? cDynamicStyle : cart.isNext ? cDynamicStyleNext : ''"
       />
     </div>
   </div>
@@ -186,6 +186,8 @@ const cartochkiData = ref([
   }
 
   .bottom-cartochka {
+    //transition: .2s;
+    opacity: 0;
     position: absolute;
     z-index: -2;
     scale: .9;

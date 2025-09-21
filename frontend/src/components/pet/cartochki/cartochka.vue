@@ -60,19 +60,21 @@ defineProps({
     min-height: 410px;
     max-height: 410px;
     box-shadow: 0px 4px 15px 15px #0000001a;
-    transition: .3s;
+    transition: opacity .3s, transform .3s;
+    cursor: default;
+    user-select: none;
 
     &__arc {
-      height: 215px;
+      height: 205px;
       border-top-left-radius: 50%;
       border-top-right-radius: 50%;
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
       background: red;
     }
 
     &__head {
-      margin-top: 4px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
       gap: 4px;
