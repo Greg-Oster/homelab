@@ -1,5 +1,6 @@
 {
   "name": "monitor",
+  "type": "module",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -16,6 +17,7 @@
     "dockerode": "^4.0.8",
     "express": "^5.1.0",
     "node-cache": "^5.1.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "sqlite3": "^5.1.7"
   }
 }

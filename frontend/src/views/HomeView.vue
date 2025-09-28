@@ -4,8 +4,8 @@ import TheTable from "../components/data-display/TheTable.vue";
 import TheSidebar from "../layouts/TheSidebar.vue";
 import TagList from "../components/data-display/TagList.vue";
 
-import { ref, computed, watch } from 'vue';
-import { useHandleSearch } from "../composables/useHandleSearch.ts";
+import {computed, ref, watch} from 'vue';
+import {useHandleSearch} from "../composables/useHandleSearch.ts";
 import {formatDateTime} from "../utils/formatDate.ts";
 import TheLoader from "../components/ui/TheLoader.vue";
 
@@ -165,6 +165,40 @@ const handleApiTest = () => {
   const test = fetch('https://api.grishaostrouhov.online/api/vacancies').then(res => res.json())
   console.log(test)
 }
+
+const handleAskGpt = async (data: any) => {
+  const rowData = data;
+  const url = rowData.url;
+  const vacancyData = await fetch(url).then(res => res.json())
+  const vacancyDescriptionRaw = vacancyData.description
+  const vacancyDescriptionClean = cleanHtmlFromTag(vacancyDescriptionRaw)
+  console.log(vacancyDescriptionClean)
+  const gptResponse = await sendToGpt(vacancyDescriptionClean, 'Какой опыт нужно указать в резюме чтобы меня позвали на собеседование?')
+  console.log(gptResponse)
+}
+
+const cleanHtmlFromTag = (html: string) => {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+const sendToGpt = async (data: any, prompt: any) => {
+  const r = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "Ты аналитик. Обрабатывай данные по инструкции." },
+        { role: "user", content: `Данные: ${data}. Инструкция: ${prompt}` }
+      ],
+      temperature: 0.7
+    })
+  });
+
+  return await r.json();
+}
 </script>
 
 <template>
@@ -185,7 +219,12 @@ const handleApiTest = () => {
     </TheSidebar>
     <div class="main-content">
       <TheLoader :is-loading="isLoadingData"/>
-      <TheTable v-if="cIsShowTable" :rows="filteredData.length > 0 ? filteredData : cTableAllData" :columns="userColumns"/>
+      <TheTable
+          v-if="cIsShowTable"
+          :rows="filteredData.length > 0 ? filteredData : cTableAllData"
+          :columns="userColumns"
+          @click="handleAskGpt"
+      />
     </div>
   </div>
 </template>

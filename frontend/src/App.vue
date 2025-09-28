@@ -3,7 +3,7 @@ import BackgroundImage from "./components/ui/BackgroundImage.vue";
 </script>
 
 <template>
-  <BackgroundImage />
+<!--  <BackgroundImage />-->
   <router-view />
 </template>
 

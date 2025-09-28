@@ -3,13 +3,17 @@
     <table class="glass-table">
       <thead>
       <tr>
-        <th :key="num">N</th>
+        <th key="num">N</th>
+        <th key="ask-gpt">Ask</th>
         <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(row, index) in rows" :key="index">
         <td>{{ index }}</td>
+        <td>
+          <button @click="handleClick(row)">ask</button>
+        </td>
         <td v-for="col in columns" :key="col.key">
           {{ col.render ? col.render(row[col.key], row) : row[col.key] }}
         </td>
@@ -19,9 +23,7 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps } from "vue";
-
+<script setup lang="ts">
 const props = defineProps({
   rows: {
     type: Array,
@@ -33,6 +35,13 @@ const props = defineProps({
     // каждый столбец: { key: 'name', label: 'Name', render: (value, row) => ... }
   },
 });
+
+import { compileTemplate } from '@vue/compiler-sfc';
+
+const template = `<div>{{ msg }}</div>`;
+const { code } = compileTemplate({ source: template, filename: 'MyComp.vue' });
+
+console.log(code); // render-функция, сгенерированная компилятором
 </script>
 
 <style scoped>
